@@ -33,7 +33,7 @@ class InitialAvatar
 
     protected string $driver = 'gd'; // imagick or gd
 
-    protected float $fontSize = 0.5;
+    protected float $fontSize = 0.4;
 
     protected string $name = 'John Doe';
 
@@ -572,7 +572,7 @@ class InitialAvatar
                 return new ImagineImagickFont(new Imagick(), $file, $size, $color);
 
             default:
-                throw new UnexpectedValueException("Unhandled driver: ". $this->driver);
+                throw new UnexpectedValueException("Unhandled driver: " . $this->driver);
         }
     }
 
@@ -598,7 +598,7 @@ class InitialAvatar
                 new Point($width / 2, $height / 2),
                 (($width - 2) / 2),
                 $palette->color($this->bgColor),
-                 true
+                true
             );
 
             if ($this->smooth) {
@@ -610,8 +610,11 @@ class InitialAvatar
 
         $avatarText = $this->getInitials();
 
-        $fontFile = $this->findFontFile();
-        $font = $this->getImagineFont($fontFile, (int) ($this->fontSize * $width), $palette->color($this->fontColor));
+        $font = $this->getImagineFont(
+            $this->findFontFile(),
+            (int) ($this->fontSize * $width),
+            $palette->color($this->fontColor)
+        );
 
         $textBox = $font->box($avatarText);
         $textBoxCenter = new Point\Center($textBox);
@@ -701,8 +704,8 @@ class InitialAvatar
             }
         }
 
-        trigger_error("Font file not found: ". $fontFile, E_USER_WARNING);
-        return __DIR__ .'/fonts/NotoSans-Regular.ttf';
+        trigger_error("Font file not found: " . $fontFile, E_USER_WARNING);
+        return __DIR__ . '/fonts/NotoSans-Regular.ttf';
     }
 
 
