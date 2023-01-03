@@ -17,64 +17,56 @@ use SVG\SVG;
 
 class InitialAvatar
 {
-    /** @var ImageManager */
-    protected $image;
+    protected ImageManager $image;
 
-    /** @var Initials */
-    protected $initials_generator;
+    protected Initials $initials_generator;
 
-    protected $driver = 'gd'; // imagick or gd
+    protected string $driver = 'gd'; // imagick or gd
 
-    protected $fontSize = 0.5;
+    protected float $fontSize = 0.5;
 
-    protected $name = 'John Doe';
+    protected string $name = 'John Doe';
 
-    protected $width = 48;
+    protected int $width = 48;
 
-    protected $height = 48;
+    protected int $height = 48;
 
-    protected $bgColor = '#f0e9e9';
+    protected string $bgColor = '#f0e9e9';
 
-    protected $fontColor = '#8b5d5d';
+    protected string $fontColor = '#8b5d5d';
 
-    protected $rounded = false;
+    protected bool $rounded = false;
 
-    protected $smooth = false;
+    protected bool $smooth = false;
 
-    protected $autofont = false;
+    protected bool $autofont = false;
 
-    protected $keepCase = false;
+    protected bool $keepCase = false;
 
-    protected $allowSpecialCharacters = true;
+    protected bool $allowSpecialCharacters = true;
 
-    protected $fontFile = '/fonts/OpenSans-Regular.ttf';
+    protected string $fontFile = '/fonts/OpenSans-Regular.ttf';
 
-    protected $fontName = 'OpenSans, sans-serif';
+    protected string $fontName = 'OpenSans, sans-serif';
 
-    protected $generated_initials = 'JD';
+    protected string $generated_initials = 'JD';
 
-    protected $preferBold = false;
+    protected bool $preferBold = false;
 
     /**
      * Language eg.en zh-CN
-     *
-     * @var string
      */
-    protected $language = 'en';
+    protected string $language = 'en';
 
     /**
      * Role translator
-     *
-     * @var Base
      */
-    protected $translator;
+    protected Base $translator;
 
     /**
      * Language related to translator
-     *
-     * @var array
      */
-    protected $translatorMap = [
+    protected array $translatorMap = [
         'en' => En::class,
         'zh-CN' => ZhCN::class,
     ];
@@ -98,12 +90,8 @@ class InitialAvatar
 
     /**
      * Set the name used for generating initials.
-     *
-     * @param string $nameOrInitials
-     *
-     * @return $this
      */
-    public function name($nameOrInitials)
+    public function name(string $nameOrInitials): self
     {
         $nameOrInitials = $this->translate($nameOrInitials);
         $this->name = $nameOrInitials;
@@ -117,10 +105,8 @@ class InitialAvatar
      * Transforms a unicode string to the proper format
      *
      * @param string $char the code to be converted (e.g., f007 would mean the "user" symbol)
-     *
-     * @return $this
      */
-    public function glyph($char)
+    public function glyph(string $char): self
     {
         $uChar = json_decode(sprintf('"\u%s"', $char), false);
         $this->name($uChar);
@@ -131,12 +117,8 @@ class InitialAvatar
 
     /**
      * Set the length of the generated initials.
-     *
-     * @param int $length
-     *
-     * @return $this
      */
-    public function length($length = 2)
+    public function length(int $length = 2): self
     {
         $this->initials_generator->length($length);
 
@@ -146,15 +128,11 @@ class InitialAvatar
 
     /**
      * Set the avatar/image size in pixels.
-     *
-     * @param int $size
-     *
-     * @return $this
      */
-    public function size($size)
+    public function size(int $size): self
     {
-        $this->width = (int) $size;
-        $this->height = (int) $size;
+        $this->width = $size;
+        $this->height = $size;
 
         return $this;
     }
@@ -162,14 +140,10 @@ class InitialAvatar
 
     /**
      * Set the avatar/image height in pixels.
-     *
-     * @param int $height
-     *
-     * @return $this
      */
-    public function height($height)
+    public function height(int $height): self
     {
-        $this->height = (int) $height;
+        $this->height = $height;
 
         return $this;
     }
@@ -177,14 +151,10 @@ class InitialAvatar
 
     /**
      * Set the avatar/image width in pixels.
-     *
-     * @param int $width
-     *
-     * @return $this
      */
-    public function width($width)
+    public function width(int $width): self
     {
-        $this->width = (int) $width;
+        $this->width = $width;
 
         return $this;
     }
@@ -192,10 +162,8 @@ class InitialAvatar
 
     /**
      * Prefer bold fonts (if possible)
-     *
-     * @return $this
      */
-    public function preferBold()
+    public function preferBold(): self
     {
         $this->preferBold = true;
 
@@ -205,10 +173,8 @@ class InitialAvatar
 
     /**
      * Prefer regular fonts (if possible)
-     *
-     * @return $this
      */
-    public function preferRegular()
+    public function preferRegular(): self
     {
         $this->preferBold = false;
 
@@ -218,14 +184,10 @@ class InitialAvatar
 
     /**
      * Set the background color.
-     *
-     * @param string $background
-     *
-     * @return $this
      */
-    public function background($background)
+    public function background(string $background): self
     {
-        $this->bgColor = (string) $background;
+        $this->bgColor = $background;
 
         return $this;
     }
@@ -233,27 +195,19 @@ class InitialAvatar
 
     /**
      * Set the font color.
-     *
-     * @param string $color
-     *
-     * @return $this
      */
-    public function color($color)
+    public function color(string $color): self
     {
-        $this->fontColor = (string) $color;
+        $this->fontColor = $color;
 
         return $this;
     }
 
 
     /**
-     * Set the font file by path or int (1-5).
-     *
-     * @param string|int $font
-     *
-     * @return $this
+     * Set the font file by path
      */
-    public function font($font)
+    public function font(string $font): self
     {
         $this->fontFile = $font;
 
@@ -265,12 +219,8 @@ class InitialAvatar
      * Set the font name
      *
      * Example: "Open Sans"
-     *
-     * @param string $name
-     *
-     * @return $this
      */
-    public function fontName($name)
+    public function fontName(string $name): self
     {
         $this->fontName = $name;
 
@@ -280,10 +230,8 @@ class InitialAvatar
 
     /**
      * Use imagick as the driver.
-     *
-     * @return $this
      */
-    public function imagick()
+    public function imagick(): self
     {
         $this->driver = 'imagick';
 
@@ -295,10 +243,8 @@ class InitialAvatar
 
     /**
      * Use GD as the driver.
-     *
-     * @return $this
      */
-    public function gd()
+    public function gd(): self
     {
         $this->driver = 'gd';
 
@@ -310,14 +256,10 @@ class InitialAvatar
 
     /**
      * Set if should make a round image or not.
-     *
-     * @param bool $rounded
-     *
-     * @return $this
      */
-    public function rounded($rounded = true)
+    public function rounded(bool $rounded = true): self
     {
-        $this->rounded = (bool) $rounded;
+        $this->rounded = $rounded;
 
         return $this;
     }
@@ -326,14 +268,10 @@ class InitialAvatar
     /**
      * Set if should detect character script
      * and use a font that supports it.
-     *
-     * @param bool $autofont
-     *
-     * @return $this
      */
-    public function autoFont($autofont = true)
+    public function autoFont(bool $autofont = true): self
     {
-        $this->autofont = (bool) $autofont;
+        $this->autofont = $autofont;
 
         return $this;
     }
@@ -341,14 +279,10 @@ class InitialAvatar
 
     /**
      * Set if should make a rounding smoother with a resizing hack.
-     *
-     * @param bool $smooth
-     *
-     * @return $this
      */
-    public function smooth($smooth = true)
+    public function smooth(bool $smooth = true): self
     {
-        $this->smooth = (bool) $smooth;
+        $this->smooth = $smooth;
 
         return $this;
     }
@@ -356,14 +290,10 @@ class InitialAvatar
 
     /**
      * Set if should skip uppercasing the name.
-     *
-     * @param bool $keepCase
-     *
-     * @return $this
      */
-    public function keepCase($keepCase = true)
+    public function keepCase(bool $keepCase = true): self
     {
-        $this->keepCase = (bool) $keepCase;
+        $this->keepCase = $keepCase;
 
         return $this;
     }
@@ -371,14 +301,10 @@ class InitialAvatar
 
     /**
      * Set if should allow (or remove) special characters
-     *
-     * @param bool $allowSpecialCharacters
-     *
-     * @return $this
      */
-    public function allowSpecialCharacters($allowSpecialCharacters = true)
+    public function allowSpecialCharacters(bool $allowSpecialCharacters = true): self
     {
-        $this->allowSpecialCharacters = (bool) $allowSpecialCharacters;
+        $this->allowSpecialCharacters = $allowSpecialCharacters;
 
         return $this;
     }
@@ -387,12 +313,8 @@ class InitialAvatar
     /**
      * Set the font size in percentage
      * (0.1 = 10%).
-     *
-     * @param float $size
-     *
-     * @return $this
      */
-    public function fontSize($size = 0.5)
+    public function fontSize(float $size = 0.5): self
     {
         $this->fontSize = number_format($size, 2);
 
@@ -402,12 +324,8 @@ class InitialAvatar
 
     /**
      * Generate the image.
-     *
-     * @param null|string $name
-     *
-     * @return Image
      */
-    public function generate($name = null)
+    public function generate(?string $name = null): Image
     {
         if ($name !== null) {
             $this->name = $name;
@@ -422,12 +340,8 @@ class InitialAvatar
 
     /**
      * Generate the image.
-     *
-     * @param null|string $name
-     *
-     * @return SVG
      */
-    public function generateSvg($name = null)
+    public function generateSvg(?string $name = null): SVG
     {
         if ($name !== null) {
             $this->name = $name;
@@ -442,10 +356,8 @@ class InitialAvatar
 
     /**
      * Will return the generated initials.
-     *
-     * @return string
      */
-    public function getInitials()
+    public function getInitials(): string
     {
         return $this->initials_generator->keepCase($this->getKeepCase())
             ->allowSpecialCharacters($this->getAllowSpecialCharacters())
@@ -456,10 +368,8 @@ class InitialAvatar
 
     /**
      * Will return the background color parameter.
-     *
-     * @return string
      */
-    public function getBackgroundColor()
+    public function getBackgroundColor(): string
     {
         return $this->bgColor;
     }
@@ -467,10 +377,8 @@ class InitialAvatar
 
     /**
      * Will return the set driver.
-     *
-     * @return string
      */
-    public function getDriver()
+    public function getDriver(): string
     {
         return $this->driver;
     }
@@ -478,10 +386,8 @@ class InitialAvatar
 
     /**
      * Will return the font color parameter.
-     *
-     * @return string
      */
-    public function getColor()
+    public function getColor(): string
     {
         return $this->fontColor;
     }
@@ -489,10 +395,8 @@ class InitialAvatar
 
     /**
      * Will return the font size parameter.
-     *
-     * @return float
      */
-    public function getFontSize()
+    public function getFontSize(): float
     {
         return $this->fontSize;
     }
@@ -500,10 +404,8 @@ class InitialAvatar
 
     /**
      * Will return the font file parameter.
-     *
-     * @return string|int
      */
-    public function getFontFile()
+    public function getFontFile(): string
     {
         return $this->fontFile;
     }
@@ -514,7 +416,7 @@ class InitialAvatar
      *
      * @return string
      */
-    public function getFontName()
+    public function getFontName(): string
     {
         return $this->fontName;
     }
@@ -522,10 +424,8 @@ class InitialAvatar
 
     /**
      * Will return the round parameter.
-     *
-     * @return bool
      */
-    public function getRounded()
+    public function getRounded(): bool
     {
         return $this->rounded;
     }
@@ -533,30 +433,17 @@ class InitialAvatar
 
     /**
      * Will return the smooth parameter.
-     *
-     * @return bool
      */
-    public function getSmooth()
+    public function getSmooth(): bool
     {
         return $this->smooth;
     }
 
 
     /**
-     * @deprecated for getWidth and getHeight
-     */
-    public function getSize()
-    {
-        return $this->getWidth();
-    }
-
-
-    /**
      * Will return the width parameter.
-     *
-     * @return int
      */
-    public function getWidth()
+    public function getWidth(): int
     {
         return $this->width;
     }
@@ -564,10 +451,8 @@ class InitialAvatar
 
     /**
      * Will return the height parameter.
-     *
-     * @return int
      */
-    public function getHeight()
+    public function getHeight(): int
     {
         return $this->height;
     }
@@ -575,10 +460,8 @@ class InitialAvatar
 
     /**
      * Will return the keepCase parameter.
-     *
-     * @return boolean
      */
-    public function getKeepCase()
+    public function getKeepCase(): bool
     {
         return $this->keepCase;
     }
@@ -586,10 +469,8 @@ class InitialAvatar
 
     /**
      * Will return the allowSpecialCharacters parameter.
-     *
-     * @return boolean
      */
-    public function getAllowSpecialCharacters()
+    public function getAllowSpecialCharacters(): bool
     {
         return $this->allowSpecialCharacters;
     }
@@ -597,10 +478,8 @@ class InitialAvatar
 
     /**
      * Will return the autofont parameter.
-     *
-     * @return bool
      */
-    public function getAutoFont()
+    public function getAutoFont(): bool
     {
         return $this->autofont;
     }
@@ -612,12 +491,8 @@ class InitialAvatar
      * $avatar->language('en')->name('Mr Green'); // Right
      * $avatar->name('Mr Green')->language('en'); // Wrong
      * ```
-     *
-     * @param string $language
-     *
-     * @return $this
      */
-    public function language($language)
+    public function language(string $language): self
     {
         $this->language = $language ?: 'en';
 
@@ -635,10 +510,8 @@ class InitialAvatar
      *     'zh-TW' => 'foo\bar\ZhTW'
      *     ];
      *     ```
-     *
-     * @return $this
      */
-    public function addTranslators($translatorMap)
+    public function addTranslators(array $translatorMap): self
     {
         $this->translatorMap = array_merge($this->translatorMap, $translatorMap);
 
@@ -646,10 +519,7 @@ class InitialAvatar
     }
 
 
-    /**
-     * @inheritdoc
-     */
-    protected function translate($nameOrInitials)
+    protected function translate(string $nameOrInitials): string
     {
         return $this->getTranslator()->translate($nameOrInitials);
     }
@@ -657,28 +527,21 @@ class InitialAvatar
 
     /**
      * Instance the translator by language
-     *
-     * @return Base
      */
-    protected function getTranslator()
+    protected function getTranslator(): Base
     {
-        if ($this->translator instanceof Base && $this->translator->getSourceLanguage() === $this->language) {
+        if (isset($this->translator) && ($this->translator->getSourceLanguage() === $this->language)) {
             return $this->translator;
         }
 
         $translatorClass = array_key_exists($this->language,
             $this->translatorMap) ? $this->translatorMap[$this->language] : 'LasseRafn\\InitialAvatarGenerator\\Translator\\En';
 
-        return $this->translato = new $translatorClass();
+        return $this->translator = new $translatorClass();
     }
 
 
-    /**
-     * @param ImageManager $image
-     *
-     * @return Image
-     */
-    protected function makeAvatar($image)
+    protected function makeAvatar(ImageManager $image): Image
     {
         $width = $this->getWidth();
         $height = $this->getHeight();
@@ -718,10 +581,7 @@ class InitialAvatar
     }
 
 
-    /**
-     * @return SVG
-     */
-    protected function makeSvgAvatar()
+    protected function makeSvgAvatar(): SVG
     {
         // Original document
         $image = new SVG($this->getWidth(), $this->getHeight());
@@ -760,16 +620,12 @@ class InitialAvatar
     }
 
 
-    protected function findFontFile()
+    protected function findFontFile(): string
     {
         $fontFile = $this->getFontFile();
 
         if ($this->getAutoFont()) {
             $fontFile = $this->getFontByScript();
-        }
-
-        if (is_int($fontFile) && \in_array($fontFile, [1, 2, 3, 4, 5], false)) {
-            return $fontFile;
         }
 
         $weightsToTry = ['Regular'];
@@ -796,11 +652,12 @@ class InitialAvatar
             }
         }
 
-        return 1;
+        trigger_error("Font file not found: ". $fontFile, E_USER_WARNING);
+        return __DIR__ .'/fonts/NotoSans-Regular.ttf';
     }
 
 
-    protected function getFontByScript()
+    protected function getFontByScript(): string
     {
         // Arabic
         if (StringScript::isArabic($this->getInitials())) {

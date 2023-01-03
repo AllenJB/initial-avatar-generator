@@ -42,16 +42,6 @@ class GenerateTest extends TestCase
 	}
 
 	/** @test */
-	public function returns_image_object_with_default_gd_wont() {
-		$avatar = new InitialAvatar();
-
-		$image = $avatar->font( 2 )->gd()->generate( 'LR' );
-
-		$this->assertEquals( 'Intervention\Image\Image', get_class( $image ) );
-		$this->assertTrue( $image->stream()->isReadable() );
-	}
-
-	/** @test */
 	public function can_use_imagick_driver() {
 		$avatar = new InitialAvatar();
 
@@ -100,7 +90,7 @@ class GenerateTest extends TestCase
 	public function can_use_local_font() {
 		$avatar = new InitialAvatar();
 
-		$image = $avatar->font( __DIR__ . '/fonts/NotoSans-Regular.ttf' )->generate();
+		$image = $avatar->font( __DIR__ . '/../src/fonts/NotoSans-Regular.ttf' )->generate();
 
 		$this->assertEquals( 'Intervention\Image\Image', get_class( $image ) );
 	}
@@ -109,6 +99,8 @@ class GenerateTest extends TestCase
 	public function has_a_font_fallback() {
 		$avatar = new InitialAvatar();
 
+        $this->expectWarning();
+        $this->expectWarningMessageMatches('/Font file not found/');
 		$image = $avatar->font( 'no-font' )->generate();
 
 		$this->assertEquals( 'Intervention\Image\Image', get_class( $image ) );

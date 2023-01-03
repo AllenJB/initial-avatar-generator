@@ -24,7 +24,7 @@ class ZhCN implements Base
     /**
      * @inheritdoc
      */
-    public function translate($words)
+    public function translate(string $words): string
     {
         return implode(' ', $this->inherent->name($words));
     }
@@ -33,7 +33,7 @@ class ZhCN implements Base
     /**
      * @inheritdoc
      */
-    public function getSourceLanguage()
+    public function getSourceLanguage(): string
     {
         return 'zh-CN';
     }

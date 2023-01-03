@@ -7,7 +7,7 @@ class En implements Base
     /**
      * @inheritdoc
      */
-    public function translate($words)
+    public function translate(string $words): string
     {
         return $words;
     }
@@ -16,7 +16,7 @@ class En implements Base
     /**
      * @inheritdoc
      */
-    public function getSourceLanguage()
+    public function getSourceLanguage(): string
     {
         return 'en';
     }

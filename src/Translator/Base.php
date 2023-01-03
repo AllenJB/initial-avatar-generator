@@ -6,17 +6,12 @@ interface Base
 {
     /**
      * Translate words to english
-     *
-     * @param string $words
-     * @return mixed
      */
-    public function translate($words);
+    public function translate(string $words): string;
 
 
     /**
      * Get the source language of translator
-     *
-     * @return string
      */
-    public function getSourceLanguage();
+    public function getSourceLanguage(): string;
 }
