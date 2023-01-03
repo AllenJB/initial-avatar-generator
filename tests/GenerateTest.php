@@ -2,6 +2,7 @@
 
 use LasseRafn\InitialAvatarGenerator\InitialAvatar;
 use PHPUnit\Framework\TestCase;
+use SVG\SVG;
 
 class GenerateTest extends TestCase
 {
@@ -136,5 +137,15 @@ class GenerateTest extends TestCase
         $image = $avatar->font('fonts/NotoSans-Regular.ttf')->generate();
 
         $this->assertEquals('Intervention\Image\Image', get_class($image));
+    }
+
+
+    public function can_render_svg()
+    {
+        $avatar = new InitialAvatar();
+
+        $image = $avatar->font('fonts/NotoSans-Regular.ttf')->generateSvg();
+
+        $this->assertInstanceOf(SVG::class, $image);
     }
 }
