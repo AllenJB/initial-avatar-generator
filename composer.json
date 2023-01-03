@@ -21,8 +21,8 @@
 		"intervention/image": "^2.3",
 		"lasserafn/php-initials": "^3.0",
 		"lasserafn/php-string-script-language": "^0.3.0",
-		"meyfa/php-svg": "^0.9.0",
-		"overtrue/pinyin": "^4.0"
+		"meyfa/php-svg": "^0.14",
+		"overtrue/pinyin": "^5.0"
 	},
 	"require-dev": {
 		"phpunit/phpunit": "^9.5"

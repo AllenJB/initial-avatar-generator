@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "dde058d279f9923cb79dd061b393b359",
+    "content-hash": "a84e066dc1c92776fd7f8b9b46d3cea9",
     "packages": [
         {
             "name": "guzzlehttp/psr7",
@@ -311,26 +311,29 @@
         },
         {
             "name": "meyfa/php-svg",
-            "version": "v0.9.1",
+            "version": "v0.14.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/meyfa/php-svg.git",
-                "reference": "34401edef1f724898f468f71b85505fbcc8351bb"
+                "reference": "c2c59ecc000c207c6ef22b826617e79d4b2ee450"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/meyfa/php-svg/zipball/34401edef1f724898f468f71b85505fbcc8351bb",
-                "reference": "34401edef1f724898f468f71b85505fbcc8351bb",
+                "url": "https://api.github.com/repos/meyfa/php-svg/zipball/c2c59ecc000c207c6ef22b826617e79d4b2ee450",
+                "reference": "c2c59ecc000c207c6ef22b826617e79d4b2ee450",
                 "shasum": ""
             },
             "require": {
-                "ext-gd": "*",
-                "ext-simplexml": "*",
-                "php": ">=5.3.3"
+                "php": ">=7.3.0"
             },
             "require-dev": {
-                "meyfa/phpunit-assert-gd": "^1.1",
-                "phpunit/phpunit": "^4.8"
+                "meyfa/phpunit-assert-gd": "^v3.0.0",
+                "phpmd/phpmd": "^2.13.0",
+                "phpunit/phpunit": "^9.5.26"
+            },
+            "suggest": {
+                "ext-gd": "Needed to rasterize images",
+                "ext-simplexml": "Needed to read SVG strings and files"
             },
             "type": "library",
             "autoload": {
@@ -345,7 +348,7 @@
             "authors": [
                 {
                     "name": "Fabian Meyer",
-                    "homepage": "http://meyfa.net"
+                    "homepage": "https://meyfa.net"
                 }
             ],
             "description": "Read, edit, write, and render SVG files with PHP",
@@ -355,31 +358,32 @@
             ],
             "support": {
                 "issues": "https://github.com/meyfa/php-svg/issues",
-                "source": "https://github.com/meyfa/php-svg/tree/v0.9.1"
+                "source": "https://github.com/meyfa/php-svg/tree/v0.14.0"
             },
-            "time": "2019-07-30T18:41:25+00:00"
+            "time": "2023-01-02T21:26:55+00:00"
         },
         {
             "name": "overtrue/pinyin",
-            "version": "4.0.8",
+            "version": "5.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/overtrue/pinyin.git",
-                "reference": "04bdb4d33d50e8fb1aa5a824064c5151c4b15dc2"
+                "reference": "4ee638c108f1230389e17ceaf2d1e0aebc3cedee"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/overtrue/pinyin/zipball/04bdb4d33d50e8fb1aa5a824064c5151c4b15dc2",
-                "reference": "04bdb4d33d50e8fb1aa5a824064c5151c4b15dc2",
+                "url": "https://api.github.com/repos/overtrue/pinyin/zipball/4ee638c108f1230389e17ceaf2d1e0aebc3cedee",
+                "reference": "4ee638c108f1230389e17ceaf2d1e0aebc3cedee",
                 "shasum": ""
             },
             "require": {
-                "php": ">=7.1"
+                "php": ">=8.0.2"
             },
             "require-dev": {
                 "brainmaestro/composer-git-hooks": "^2.7",
-                "friendsofphp/php-cs-fixer": "^2.16",
-                "phpunit/phpunit": "~8.0"
+                "friendsofphp/php-cs-fixer": "^3.2",
+                "nunomaduro/termwind": "^1.13",
+                "phpunit/phpunit": "^9.5"
             },
             "type": "library",
             "extra": {
@@ -395,9 +399,6 @@
                 }
             },
             "autoload": {
-                "files": [
-                    "src/const.php"
-                ],
                 "psr-4": {
                     "Overtrue\\Pinyin\\": "src/"
                 }
@@ -422,15 +423,15 @@
             ],
             "support": {
                 "issues": "https://github.com/overtrue/pinyin/issues",
-                "source": "https://github.com/overtrue/pinyin/tree/4.0.8"
+                "source": "https://github.com/overtrue/pinyin/tree/5.0.0"
             },
             "funding": [
                 {
-                    "url": "https://www.patreon.com/overtrue",
-                    "type": "patreon"
+                    "url": "https://github.com/overtrue",
+                    "type": "github"
                 }
             ],
-            "time": "2021-07-19T03:43:32+00:00"
+            "time": "2022-07-24T11:43:54+00:00"
         },
         {
             "name": "psr/http-factory",

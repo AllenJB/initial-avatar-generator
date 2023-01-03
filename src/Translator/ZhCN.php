@@ -8,10 +8,8 @@ class ZhCN implements Base
 {
     /**
      * Inherent instance of zh-CN translator
-     *
-     * @var Pinyin
      */
-    protected $inherent;
+    protected Pinyin $inherent;
 
     /**
      * ZhCN constructor, set the instance of PinYin

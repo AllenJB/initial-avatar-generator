@@ -12,7 +12,6 @@ use LasseRafn\Initials\Initials;
 use LasseRafn\StringScript;
 use SVG\Nodes\Shapes\SVGCircle;
 use SVG\Nodes\Shapes\SVGRect;
-use SVG\Nodes\Structures\SVGFont;
 use SVG\Nodes\Texts\SVGText;
 use SVG\SVG;
 
@@ -633,9 +632,10 @@ class InitialAvatar
 		$background->setStyle( 'fill', $this->getBackgroundColor() );
 		$document->addChild( $background );
 
+		SVG::addFont($this->findFontFile());
 		// Text
 		$text = new SVGText( $this->getInitials(), '50%', '50%' );
-		$text->setFont( new SVGFont( $this->getFontName(), $this->findFontFile() ) );
+		$text->setFontFamily( $this->getFontName());
 		$text->setStyle( 'line-height', 1 );
 		$text->setAttribute( 'dy', '.1em' );
 		$text->setAttribute( 'fill', $this->getColor() );
