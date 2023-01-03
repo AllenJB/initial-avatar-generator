@@ -597,7 +597,8 @@ class InitialAvatar
             $avatar->draw()->circle(
                 new Point($width / 2, $height / 2),
                 (($width - 2) / 2),
-                $palette->color($this->bgColor)
+                $palette->color($this->bgColor),
+                 true
             );
 
             if ($this->smooth) {
