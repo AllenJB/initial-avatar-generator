@@ -74,7 +74,7 @@ class InitialAvatar
     protected Base $translator;
 
     /**
-     * Language related to translator
+     * @var array<string, class-string<Base>> $translatorMap Language related to translator
      */
     protected array $translatorMap = [
         'en' => En::class,
@@ -89,10 +89,7 @@ class InitialAvatar
     }
 
 
-    /**
-     * Create a ImageManager instance
-     */
-    protected function setupImageManager()
+    protected function setupImageManager(): void
     {
         switch ($this->driver) {
             case 'gd':
@@ -337,7 +334,7 @@ class InitialAvatar
      */
     public function fontSize(float $size = 0.5): self
     {
-        $this->fontSize = number_format($size, 2);
+        $this->fontSize = $size;
 
         return $this;
     }
@@ -524,7 +521,7 @@ class InitialAvatar
     /**
      * Add new translators designed by user
      *
-     * @param array $translatorMap
+     * @param array<string, class-string<Base>> $translatorMap
      *     ```php
      *     $translatorMap = [
      *     'fr' => 'foo\bar\Fr',
@@ -555,10 +552,10 @@ class InitialAvatar
             return $this->translator;
         }
 
-        $translatorClass = array_key_exists($this->language,
-            $this->translatorMap) ? $this->translatorMap[$this->language] : 'LasseRafn\\InitialAvatarGenerator\\Translator\\En';
+        $translatorClass = ($this->translatorMap[$this->language] ?? En::class);
 
-        return $this->translator = new $translatorClass();
+        $this->translator = new $translatorClass();
+        return $this->translator;
     }
 
 
@@ -683,6 +680,9 @@ class InitialAvatar
 
         foreach ($weightsToTry as $weight) {
             $fontFile = preg_replace('/(\-(Bold|Semibold|Regular))/', "-{$weight}", $originalFile);
+            if ($fontFile === null) {
+                throw new UnexpectedValueException("Failed to replace font weight");
+            }
 
             if (file_exists($fontFile)) {
                 return $fontFile;
