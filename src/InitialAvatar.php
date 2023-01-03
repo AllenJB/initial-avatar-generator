@@ -2,9 +2,18 @@
 
 namespace AllenJB\InitialAvatarGenerator;
 
-use Intervention\Image\AbstractFont;
-use Intervention\Image\Image;
-use Intervention\Image\ImageManager;
+use Imagick;
+use Imagine\Gd\Font as ImagineGdFont;
+use Imagine\Gd\Imagine as ImagineGd;
+use Imagine\Image\AbstractFont;
+use Imagine\Image\Box;
+use Imagine\Image\ImageInterface;
+use Imagine\Image\ImagineInterface;
+use Imagine\Image\Palette\Color\ColorInterface;
+use Imagine\Image\Palette\RGB;
+use Imagine\Image\Point;
+use Imagine\Imagick\Font as ImagineImagickFont;
+use Imagine\Imagick\Imagine as ImagineImagick;
 use AllenJB\InitialAvatarGenerator\Translator\Base;
 use AllenJB\InitialAvatarGenerator\Translator\En;
 use AllenJB\InitialAvatarGenerator\Translator\ZhCN;
@@ -14,10 +23,11 @@ use SVG\Nodes\Shapes\SVGCircle;
 use SVG\Nodes\Shapes\SVGRect;
 use SVG\Nodes\Texts\SVGText;
 use SVG\SVG;
+use UnexpectedValueException;
 
 class InitialAvatar
 {
-    protected ImageManager $image;
+    protected ImagineInterface $imagine;
 
     protected Initials $initials_generator;
 
@@ -84,7 +94,18 @@ class InitialAvatar
      */
     protected function setupImageManager()
     {
-        $this->image = new ImageManager(['driver' => $this->getDriver()]);
+        switch ($this->driver) {
+            case 'gd':
+                $this->imagine = new ImagineGd();
+                break;
+
+            case 'imagick':
+                $this->imagine = new ImagineImagick();
+                break;
+
+            default:
+                throw new UnexpectedValueException("Unrecognized driver name. Must be 'gd' or 'imagick'");
+        }
     }
 
 
@@ -325,7 +346,7 @@ class InitialAvatar
     /**
      * Generate the image.
      */
-    public function generate(?string $name = null): Image
+    public function generate(?string $name = null): ImageInterface
     {
         if ($name !== null) {
             $this->name = $name;
@@ -334,7 +355,7 @@ class InitialAvatar
                 ->generate($name);
         }
 
-        return $this->makeAvatar($this->image);
+        return $this->makeAvatar();
     }
 
 
@@ -541,43 +562,67 @@ class InitialAvatar
     }
 
 
-    protected function makeAvatar(ImageManager $image): Image
+    protected function getImagineFont(string $file, int $size, ColorInterface $color): AbstractFont
+    {
+        switch ($this->driver) {
+            case 'gd':
+                return new ImagineGdFont($file, $size, $color);
+
+            case 'imagick':
+                return new ImagineImagickFont(new Imagick(), $file, $size, $color);
+
+            default:
+                throw new UnexpectedValueException("Unhandled driver: ". $this->driver);
+        }
+    }
+
+
+    protected function makeAvatar(): ImageInterface
     {
         $width = $this->getWidth();
         $height = $this->getHeight();
-        $bgColor = $this->getBackgroundColor();
-        $name = $this->getInitials();
-        $fontFile = $this->findFontFile();
-        $color = $this->getColor();
-        $fontSize = $this->getFontSize();
-
         if ($this->getRounded() && $this->getSmooth()) {
             $width *= 5;
             $height *= 5;
         }
 
-        $avatar = $image->canvas($width, $height, ! $this->getRounded() ? $bgColor : null);
+        $palette = new RGB();
+        $bgColor = $palette->color($this->bgColor);
+        if ($this->rounded) {
+            $bgColor = $palette->color('#ffffff', 0);
+        }
+        $avatar = $this->imagine->create(new Box($width, $height), $bgColor);
 
-        if ($this->getRounded()) {
-            $avatar = $avatar->circle($width - 2, $width / 2, $height / 2, function ($draw) use ($bgColor) {
-                return $draw->background($bgColor);
-            });
+        if ($this->rounded) {
+            $avatar->draw()->circle(
+                new Point($width / 2, $height / 2),
+                (($width - 2) / 2),
+                $palette->color($this->bgColor)
+            );
+
+            if ($this->smooth) {
+                $width /= 5;
+                $height /= 5;
+                $avatar->resize(new Box($width, $height));
+            }
         }
 
-        if ($this->getRounded() && $this->getSmooth()) {
-            $width /= 5;
-            $height /= 5;
-            $avatar->resize($width, $height);
-        }
+        $avatarText = $this->getInitials();
 
-        return $avatar->text($name, $width / 2, $height / 2,
-            function (AbstractFont $font) use ($width, $color, $fontFile, $fontSize) {
-                $font->file($fontFile);
-                $font->size($width * $fontSize);
-                $font->color($color);
-                $font->align('center');
-                $font->valign('center');
-            });
+        $fontFile = $this->findFontFile();
+        $font = $this->getImagineFont($fontFile, (int) ($this->fontSize * $width), $palette->color($this->fontColor));
+
+        $textBox = $font->box($avatarText);
+        $textBoxCenter = new Point\Center($textBox);
+        $imageBoxCenter = new Point\Center($avatar->getSize());
+        $centeredTextPosition = new Point(
+            max($imageBoxCenter->getX() - $textBoxCenter->getX(), 0),
+            max($imageBoxCenter->getY() - $textBoxCenter->getY(), 0)
+        );
+
+        $avatar->draw()->text($this->getInitials(), $font, $centeredTextPosition);
+
+        return $avatar;
     }
 
 

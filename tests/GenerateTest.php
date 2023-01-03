@@ -1,6 +1,7 @@
 <?php
 
 use AllenJB\InitialAvatarGenerator\InitialAvatar;
+use Imagine\Image\ImageInterface;
 use PHPUnit\Framework\TestCase;
 use SVG\SVG;
 
@@ -24,7 +25,7 @@ class GenerateTest extends TestCase
 
         $image = $avatar->generate();
 
-        $this->assertEquals('Intervention\Image\Image', get_class($image));
+        $this->assertInstanceOf(ImageInterface::class, $image);
     }
 
 
@@ -35,7 +36,7 @@ class GenerateTest extends TestCase
 
         $image = $avatar->generate('😅');
 
-        $this->assertEquals('Intervention\Image\Image', get_class($image));
+        $this->assertInstanceOf(ImageInterface::class, $image);
     }
 
 
@@ -46,7 +47,7 @@ class GenerateTest extends TestCase
 
         $image = $avatar->font(__DIR__ . '/fonts/NotoSans-Regular.otf')->generate('こんにちは');
 
-        $this->assertEquals('Intervention\Image\Image', get_class($image));
+        $this->assertInstanceOf(ImageInterface::class, $image);
     }
 
 
@@ -57,8 +58,7 @@ class GenerateTest extends TestCase
 
         $image = $avatar->imagick()->generate('LR');
 
-        $this->assertEquals('Intervention\Image\Image', get_class($image));
-        $this->assertTrue($image->stream()->isReadable());
+        $this->assertInstanceOf(ImageInterface::class, $image);
     }
 
 
@@ -69,8 +69,7 @@ class GenerateTest extends TestCase
 
         $image = $avatar->gd()->generate('LR');
 
-        $this->assertEquals('Intervention\Image\Image', get_class($image));
-        $this->assertTrue($image->stream()->isReadable());
+        $this->assertInstanceOf(ImageInterface::class, $image);
     }
 
 
@@ -81,7 +80,7 @@ class GenerateTest extends TestCase
 
         $image = $avatar->rounded()->generate();
 
-        $this->assertEquals('Intervention\Image\Image', get_class($image));
+        $this->assertInstanceOf(ImageInterface::class, $image);
     }
 
 
@@ -92,16 +91,7 @@ class GenerateTest extends TestCase
 
         $image = $avatar->rounded()->smooth()->generate();
 
-        $this->assertEquals('Intervention\Image\Image', get_class($image));
-    }
-
-
-    /** @test */
-    public function stream_is_readable()
-    {
-        $avatar = new InitialAvatar();
-
-        $this->assertTrue($avatar->generate()->stream()->isReadable());
+        $this->assertInstanceOf(ImageInterface::class, $image);
     }
 
 
@@ -112,7 +102,7 @@ class GenerateTest extends TestCase
 
         $image = $avatar->font(__DIR__ . '/../src/fonts/NotoSans-Regular.ttf')->generate();
 
-        $this->assertEquals('Intervention\Image\Image', get_class($image));
+        $this->assertInstanceOf(ImageInterface::class, $image);
     }
 
 
@@ -125,7 +115,7 @@ class GenerateTest extends TestCase
         $this->expectWarningMessageMatches('/Font file not found/');
         $image = $avatar->font('no-font')->generate();
 
-        $this->assertEquals('Intervention\Image\Image', get_class($image));
+        $this->assertInstanceOf(ImageInterface::class, $image);
     }
 
 
@@ -136,7 +126,7 @@ class GenerateTest extends TestCase
 
         $image = $avatar->font('fonts/NotoSans-Regular.ttf')->generate();
 
-        $this->assertEquals('Intervention\Image\Image', get_class($image));
+        $this->assertInstanceOf(ImageInterface::class, $image);
     }
 
 

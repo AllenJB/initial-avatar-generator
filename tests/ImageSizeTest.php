@@ -12,8 +12,8 @@ class ImageSizeTest extends TestCase
 
         $avatar->size(50);
 
-        $this->assertEquals(50, $avatar->generate()->getWidth());
-        $this->assertEquals(50, $avatar->generate()->getHeight());
+        $this->assertEquals(50, $avatar->generate()->getSize()->getWidth());
+        $this->assertEquals(50, $avatar->generate()->getSize()->getHeight());
     }
 
 
@@ -24,7 +24,7 @@ class ImageSizeTest extends TestCase
 
         $avatar->size(100);
 
-        $this->assertEquals(100, $avatar->generate()->getWidth());
-        $this->assertEquals(100, $avatar->generate()->getHeight());
+        $this->assertEquals(100, $avatar->generate()->getSize()->getWidth());
+        $this->assertEquals(100, $avatar->generate()->getSize()->getHeight());
     }
 }
