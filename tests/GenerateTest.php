@@ -5,113 +5,136 @@ use PHPUnit\Framework\TestCase;
 
 class GenerateTest extends TestCase
 {
-	/** @test */
-	public function CanGenerateInitialsWithoutNameParameter() {
-		$avatar = new InitialAvatar();
+    /** @test */
+    public function CanGenerateInitialsWithoutNameParameter()
+    {
+        $avatar = new InitialAvatar();
 
-		$avatar->generate( 'Lasse Rafn' );
+        $avatar->generate('Lasse Rafn');
 
-		$this->assertEquals( 'LR', $avatar->getInitials() );
-	}
+        $this->assertEquals('LR', $avatar->getInitials());
+    }
 
-	/** @test */
-	public function returns_image_object() {
-		$avatar = new InitialAvatar();
 
-		$image = $avatar->generate();
+    /** @test */
+    public function returns_image_object()
+    {
+        $avatar = new InitialAvatar();
 
-		$this->assertEquals( 'Intervention\Image\Image', get_class( $image ) );
-	}
+        $image = $avatar->generate();
 
-	/** @test */
-	public function returns_image_object_with_emoji() {
-		$avatar = new InitialAvatar();
+        $this->assertEquals('Intervention\Image\Image', get_class($image));
+    }
 
-		$image = $avatar->generate( '😅' );
 
-		$this->assertEquals( 'Intervention\Image\Image', get_class( $image ) );
-	}
+    /** @test */
+    public function returns_image_object_with_emoji()
+    {
+        $avatar = new InitialAvatar();
 
-	/** @test */
-	public function returns_image_object_with_japanese_letters() {
-		$avatar = new InitialAvatar();
+        $image = $avatar->generate('😅');
 
-		$image = $avatar->font( __DIR__ . '/fonts/NotoSans-Regular.otf' )->generate( 'こんにちは' );
+        $this->assertEquals('Intervention\Image\Image', get_class($image));
+    }
 
-		$this->assertEquals( 'Intervention\Image\Image', get_class( $image ) );
-	}
 
-	/** @test */
-	public function can_use_imagick_driver() {
-		$avatar = new InitialAvatar();
+    /** @test */
+    public function returns_image_object_with_japanese_letters()
+    {
+        $avatar = new InitialAvatar();
 
-		$image = $avatar->imagick()->generate( 'LR' );
+        $image = $avatar->font(__DIR__ . '/fonts/NotoSans-Regular.otf')->generate('こんにちは');
 
-		$this->assertEquals( 'Intervention\Image\Image', get_class( $image ) );
-		$this->assertTrue( $image->stream()->isReadable() );
-	}
+        $this->assertEquals('Intervention\Image\Image', get_class($image));
+    }
 
-	/** @test */
-	public function can_use_gd_driver() {
-		$avatar = new InitialAvatar();
 
-		$image = $avatar->gd()->generate( 'LR' );
+    /** @test */
+    public function can_use_imagick_driver()
+    {
+        $avatar = new InitialAvatar();
 
-		$this->assertEquals( 'Intervention\Image\Image', get_class( $image ) );
-		$this->assertTrue( $image->stream()->isReadable() );
-	}
+        $image = $avatar->imagick()->generate('LR');
 
-	/** @test */
-	public function can_make_rounded_images() {
-		$avatar = new InitialAvatar();
+        $this->assertEquals('Intervention\Image\Image', get_class($image));
+        $this->assertTrue($image->stream()->isReadable());
+    }
 
-		$image = $avatar->rounded()->generate();
 
-		$this->assertEquals( 'Intervention\Image\Image', get_class( $image ) );
-	}
+    /** @test */
+    public function can_use_gd_driver()
+    {
+        $avatar = new InitialAvatar();
 
-	/** @test */
-	public function can_make_a_smooth_rounded_image() {
-		$avatar = new InitialAvatar();
+        $image = $avatar->gd()->generate('LR');
 
-		$image = $avatar->rounded()->smooth()->generate();
+        $this->assertEquals('Intervention\Image\Image', get_class($image));
+        $this->assertTrue($image->stream()->isReadable());
+    }
 
-		$this->assertEquals( 'Intervention\Image\Image', get_class( $image ) );
-	}
 
-	/** @test */
-	public function stream_is_readable() {
-		$avatar = new InitialAvatar();
+    /** @test */
+    public function can_make_rounded_images()
+    {
+        $avatar = new InitialAvatar();
 
-		$this->assertTrue( $avatar->generate()->stream()->isReadable() );
-	}
+        $image = $avatar->rounded()->generate();
 
-	/** @test */
-	public function can_use_local_font() {
-		$avatar = new InitialAvatar();
+        $this->assertEquals('Intervention\Image\Image', get_class($image));
+    }
 
-		$image = $avatar->font( __DIR__ . '/../src/fonts/NotoSans-Regular.ttf' )->generate();
 
-		$this->assertEquals( 'Intervention\Image\Image', get_class( $image ) );
-	}
+    /** @test */
+    public function can_make_a_smooth_rounded_image()
+    {
+        $avatar = new InitialAvatar();
 
-	/** @test */
-	public function has_a_font_fallback() {
-		$avatar = new InitialAvatar();
+        $image = $avatar->rounded()->smooth()->generate();
+
+        $this->assertEquals('Intervention\Image\Image', get_class($image));
+    }
+
+
+    /** @test */
+    public function stream_is_readable()
+    {
+        $avatar = new InitialAvatar();
+
+        $this->assertTrue($avatar->generate()->stream()->isReadable());
+    }
+
+
+    /** @test */
+    public function can_use_local_font()
+    {
+        $avatar = new InitialAvatar();
+
+        $image = $avatar->font(__DIR__ . '/../src/fonts/NotoSans-Regular.ttf')->generate();
+
+        $this->assertEquals('Intervention\Image\Image', get_class($image));
+    }
+
+
+    /** @test */
+    public function has_a_font_fallback()
+    {
+        $avatar = new InitialAvatar();
 
         $this->expectWarning();
         $this->expectWarningMessageMatches('/Font file not found/');
-		$image = $avatar->font( 'no-font' )->generate();
+        $image = $avatar->font('no-font')->generate();
 
-		$this->assertEquals( 'Intervention\Image\Image', get_class( $image ) );
-	}
+        $this->assertEquals('Intervention\Image\Image', get_class($image));
+    }
 
-	/** @test */
-	public function can_handle_fonts_without_slash_first() {
-		$avatar = new InitialAvatar();
 
-		$image = $avatar->font( 'fonts/NotoSans-Regular.ttf' )->generate();
+    /** @test */
+    public function can_handle_fonts_without_slash_first()
+    {
+        $avatar = new InitialAvatar();
 
-		$this->assertEquals( 'Intervention\Image\Image', get_class( $image ) );
-	}
+        $image = $avatar->font('fonts/NotoSans-Regular.ttf')->generate();
+
+        $this->assertEquals('Intervention\Image\Image', get_class($image));
+    }
 }

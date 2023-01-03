@@ -5,58 +5,69 @@ use PHPUnit\Framework\TestCase;
 
 class InitialGenerationTest extends TestCase
 {
-	/** @test */
-	public function initials_are_generated_from_full_name() {
-		$avatar = new InitialAvatar();
+    /** @test */
+    public function initials_are_generated_from_full_name()
+    {
+        $avatar = new InitialAvatar();
 
-		$avatar->name( 'John Doe' );
+        $avatar->name('John Doe');
 
-		$this->assertEquals( 'JD', $avatar->getInitials() );
-	}
+        $this->assertEquals('JD', $avatar->getInitials());
+    }
 
-	/** @test */
-	public function initials_are_generated_from_single_name() {
-		$avatar = new InitialAvatar();
 
-		$avatar->name( 'John' );
+    /** @test */
+    public function initials_are_generated_from_single_name()
+    {
+        $avatar = new InitialAvatar();
 
-		$this->assertEquals( 'JO', $avatar->getInitials() );
-	}
+        $avatar->name('John');
 
-	/** @test */
-	public function initials_are_generated_from_initals() {
-		$avatar = new InitialAvatar();
+        $this->assertEquals('JO', $avatar->getInitials());
+    }
 
-		$avatar->name( 'MA' );
 
-		$this->assertEquals( 'MA', $avatar->getInitials() );
-	}
+    /** @test */
+    public function initials_are_generated_from_initals()
+    {
+        $avatar = new InitialAvatar();
 
-	/** @test */
-	public function initials_are_generated_from_three_names() {
-		$avatar = new InitialAvatar();
+        $avatar->name('MA');
 
-		$avatar->name( 'John Doe Bergerson' );
+        $this->assertEquals('MA', $avatar->getInitials());
+    }
 
-		$this->assertEquals( 'JB', $avatar->getInitials() );
-	}
 
-	/** @test */
-	public function initials_are_generated_with_dialect_specific_letters() {
-		$avatar = new InitialAvatar();
+    /** @test */
+    public function initials_are_generated_from_three_names()
+    {
+        $avatar = new InitialAvatar();
 
-		$avatar->name( 'Gustav Årgonson' );
+        $avatar->name('John Doe Bergerson');
 
-		$this->assertEquals( 'GÅ', $avatar->getInitials() );
-	}
+        $this->assertEquals('JB', $avatar->getInitials());
+    }
 
-	/** @test */
-	public function initials_are_generated_from_name() {
-		$avatar = new InitialAvatar();
 
-		$avatar->name( 'Chanel Butterman' );
+    /** @test */
+    public function initials_are_generated_with_dialect_specific_letters()
+    {
+        $avatar = new InitialAvatar();
 
-		$this->assertNotEquals( 'AB', $avatar->getInitials() );
-		$this->assertEquals( 'CB', $avatar->getInitials() );
-	}
+        $avatar->name('Gustav Årgonson');
+
+        $this->assertEquals('GÅ', $avatar->getInitials());
+    }
+
+
+    /** @test */
+    public function initials_are_generated_from_name()
+    {
+        $avatar = new InitialAvatar();
+
+        $avatar->name('Chanel Butterman');
+
+        $this->assertNotEquals('AB', $avatar->getInitials());
+        $this->assertEquals('CB', $avatar->getInitials());
+    }
 }
