@@ -595,8 +595,8 @@ class InitialAvatar
 
         if ($this->rounded) {
             $avatar->draw()->circle(
-                new Point($width / 2, $height / 2),
-                (($width - 2) / 2),
+                new Point((int) ($width / 2), (int) ($height / 2)),
+                (int) (($width - 2) / 2),
                 $palette->color($this->bgColor),
                 true
             );
@@ -604,7 +604,7 @@ class InitialAvatar
             if ($this->smooth) {
                 $width /= 5;
                 $height /= 5;
-                $avatar->resize(new Box($width, $height));
+                $avatar->resize(new Box((int) $width, (int) $height));
             }
         }
 

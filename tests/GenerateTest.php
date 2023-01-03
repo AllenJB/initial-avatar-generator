@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 use AllenJB\InitialAvatarGenerator\InitialAvatar;
 use Imagine\Image\ImageInterface;
@@ -130,6 +131,7 @@ class GenerateTest extends TestCase
     }
 
 
+    /** @test */
     public function can_render_svg()
     {
         $avatar = new InitialAvatar();
@@ -137,5 +139,15 @@ class GenerateTest extends TestCase
         $image = $avatar->font('fonts/NotoSans-Regular.ttf')->generateSvg();
 
         $this->assertInstanceOf(SVG::class, $image);
+    }
+
+
+    /** @test */
+    public function handle_odd_sizes()
+    {
+        error_reporting(E_ALL);
+        $avatar = new InitialAvatar();
+        $image = $avatar->gd()->rounded()->width(21)->height(21)->generate("AB");
+        $this->assertInstanceOf(ImageInterface::class, $image);
     }
 }
