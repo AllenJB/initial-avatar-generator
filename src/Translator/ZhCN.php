@@ -1,6 +1,6 @@
 <?php
 
-namespace LasseRafn\InitialAvatarGenerator\Translator;
+namespace AllenJB\InitialAvatarGenerator\Translator;
 
 use Overtrue\Pinyin\Pinyin;
 

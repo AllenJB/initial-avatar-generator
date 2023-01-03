@@ -1,6 +1,6 @@
 <?php
 
-use LasseRafn\InitialAvatarGenerator\InitialAvatar;
+use AllenJB\InitialAvatarGenerator\InitialAvatar;
 use PHPUnit\Framework\TestCase;
 
 class InitialGenerationTest extends TestCase

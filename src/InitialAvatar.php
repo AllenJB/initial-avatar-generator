@@ -1,13 +1,13 @@
 <?php
 
-namespace LasseRafn\InitialAvatarGenerator;
+namespace AllenJB\InitialAvatarGenerator;
 
 use Intervention\Image\AbstractFont;
 use Intervention\Image\Image;
 use Intervention\Image\ImageManager;
-use LasseRafn\InitialAvatarGenerator\Translator\Base;
-use LasseRafn\InitialAvatarGenerator\Translator\En;
-use LasseRafn\InitialAvatarGenerator\Translator\ZhCN;
+use AllenJB\InitialAvatarGenerator\Translator\Base;
+use AllenJB\InitialAvatarGenerator\Translator\En;
+use AllenJB\InitialAvatarGenerator\Translator\ZhCN;
 use LasseRafn\Initials\Initials;
 use LasseRafn\StringScript;
 use SVG\Nodes\Shapes\SVGCircle;

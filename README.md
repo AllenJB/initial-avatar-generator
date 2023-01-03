@@ -1,53 +1,18 @@
 # Generate avatars with initials
-Ever seen those avatars (basically everywhere) that has your initials — mine would be LR; Lasse Rafn — well this package allows you to generate those, in a simple manner.
-
-<p align="center">
-<img src="https://apricot.dk/github/php-initial-avatar-generator.jpg" alt="Banner" />
-</p>
- 
-<p align="center"> 
-<a href="https://travis-ci.org/LasseRafn/php-initial-avatar-generator"><img src="https://img.shields.io/travis/LasseRafn/php-initial-avatar-generator.svg?style=flat-square" alt="Build Status"></a>
-<a href="https://coveralls.io/github/LasseRafn/php-initial-avatar-generator"><img src="https://img.shields.io/coveralls/LasseRafn/php-initial-avatar-generator.svg?style=flat-square" alt="Coverage"></a>
-<a href="https://styleci.io/repos/78973710"><img src="https://styleci.io/repos/78973710/shield?branch=master" alt="StyleCI Status"></a>
-<a href="https://packagist.org/packages/LasseRafn/php-initial-avatar-generator"><img src="https://img.shields.io/packagist/dt/LasseRafn/php-initial-avatar-generator.svg?style=flat-square" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/LasseRafn/php-initial-avatar-generator"><img src="https://img.shields.io/packagist/v/LasseRafn/php-initial-avatar-generator.svg?style=flat-square" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/LasseRafn/php-initial-avatar-generator"><img src="https://img.shields.io/packagist/l/LasseRafn/php-initial-avatar-generator.svg?style=flat-square" alt="License"></a>
-</p>
-
-## Backers
-
-Thank you to all our backers! 🙏 [[Become a backer](https://opencollective.com/ui-avatars#backer)]
-
-<a href="https://opencollective.com/ui-avatars#backers" target="_blank"><img src="https://opencollective.com/ui-avatars/backers.svg?width=890"></a>
-
-## Sponsors
-
-Support this project by becoming a sponsor. Your logo will show up here with a link to your website. [[Become a sponsor](https://opencollective.com/ui-avatars#sponsor)]
-
-<a href="https://opencollective.com/ui-avatars/sponsor/0/website" target="_blank"><img src="https://opencollective.com/ui-avatars/sponsor/0/avatar.svg"></a>
-<a href="https://opencollective.com/ui-avatars/sponsor/1/website" target="_blank"><img src="https://opencollective.com/ui-avatars/sponsor/1/avatar.svg"></a>
-<a href="https://opencollective.com/ui-avatars/sponsor/2/website" target="_blank"><img src="https://opencollective.com/ui-avatars/sponsor/2/avatar.svg"></a>
-<a href="https://opencollective.com/ui-avatars/sponsor/3/website" target="_blank"><img src="https://opencollective.com/ui-avatars/sponsor/3/avatar.svg"></a>
-<a href="https://opencollective.com/ui-avatars/sponsor/4/website" target="_blank"><img src="https://opencollective.com/ui-avatars/sponsor/4/avatar.svg"></a>
-<a href="https://opencollective.com/ui-avatars/sponsor/5/website" target="_blank"><img src="https://opencollective.com/ui-avatars/sponsor/5/avatar.svg"></a>
-<a href="https://opencollective.com/ui-avatars/sponsor/6/website" target="_blank"><img src="https://opencollective.com/ui-avatars/sponsor/6/avatar.svg"></a>
-<a href="https://opencollective.com/ui-avatars/sponsor/7/website" target="_blank"><img src="https://opencollective.com/ui-avatars/sponsor/7/avatar.svg"></a>
-<a href="https://opencollective.com/ui-avatars/sponsor/8/website" target="_blank"><img src="https://opencollective.com/ui-avatars/sponsor/8/avatar.svg"></a>
-<a href="https://opencollective.com/ui-avatars/sponsor/9/website" target="_blank"><img src="https://opencollective.com/ui-avatars/sponsor/9/avatar.svg"></a>
-
-**There's also a api you can use: [https://ui-avatars.com](https://ui-avatars.com)**
+Fork of [lasserafn/php-initial-avatar-generator](https://github.com/LasseRafn/php-initial-avatar-generator) updated to
+use [Imagine](https://github.com/php-imagine/Imagine), resolving issues with PHP 8.1
 
 ## Installation
 You just require using composer and you're good to go!
 ````bash
-composer require lasserafn/php-initial-avatar-generator
+composer require allenjb/initial-avatar-generator
 ````
 Rad, *and long*, package name.. huh? Sorry. I'm not very good with names.
 
 ## Usage
 As with installation, usage is quite simple. Generating a image is done by running:
 ````php
-$avatar = new LasseRafn\InitialAvatarGenerator\InitialAvatar();
+$avatar = new AllenJB\InitialAvatarGenerator\InitialAvatar();
 
 $image = $avatar->name('Lasse Rafn')->generate();
 ````
@@ -60,7 +25,7 @@ You can also just pass along the initials, and it will use those. Should you jus
 
 ## SVG generation
 ````php
-$avatar = new LasseRafn\InitialAvatarGenerator\InitialAvatar();
+$avatar = new AllenJB\InitialAvatarGenerator\InitialAvatar();
 
 echo $avatar->name('Lasse Rafn')->generateSvg()->toXMLString(); // returns SVG XML string
 ````
@@ -185,7 +150,7 @@ Now, using that in a image (sized 48x48 pixels for retina):
 ````
 Will yield:
 
-<img src="https://raw.githubusercontent.com/LasseRafn/php-initial-avatar-generator/master/demo_result.png" width="48" height="48" alt="Result" style="border-radius: 100%" />
+<img src="https://raw.githubusercontent.com/AllenJB/initial-avatar-generator/master/demo_result.png" width="48" height="48" alt="Result" style="border-radius: 100%" />
 
 *Rounded for appearance; the actual avatar is a filled square*
 
@@ -211,10 +176,6 @@ return $avatar->glyph('f007')
               ->stream('png', 100);
 ```
 
-## Requirements
-* PHP +7.0
-* Fileinfo Extension (from intervention/image)
-
 ## Script/Language support
 Some letters are not supported by the default font files, so I added some fonts to add support. You must use `autoFont()` to enable this feature. Supported are:
 
@@ -227,10 +188,3 @@ Some letters are not supported by the default font files, so I added some fonts 
 * Chinese
 * Thai
 * Tibetan
-
-## [Contributors](https://github.com/LasseRafn/php-initial-avatar-generator/graphs/contributors)
-Open Source is best when supported by a community. Any size of contribution is **very** appreciated.
-
-## Supported Image Libraries (from intervention/image)
-* GD Library (>=2.0)
-* Imagick PHP extension (>=6.5.7)
