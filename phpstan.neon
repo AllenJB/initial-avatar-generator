@@ -1,7 +1,7 @@
 parameters:
     # From 0-8 (or "max". 0 is loosest). See the files in conf/ in the repo for what's at each level
     # Can be overridden with the -l parameter on the commandline
-    level: 8
+    level: max
     parallel:
         processTimeout: 300.0
     fileExtensions:

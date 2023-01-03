@@ -127,6 +127,9 @@ class InitialAvatar
     public function glyph(string $char): self
     {
         $uChar = json_decode(sprintf('"\u%s"', $char), false);
+        if (! is_string($uChar)) {
+            throw new \UnexpectedValueException("Failed to transform unicode character");
+        }
         $this->name($uChar);
 
         return $this;
