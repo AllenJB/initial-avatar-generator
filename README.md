@@ -2,12 +2,18 @@
 Fork of [lasserafn/php-initial-avatar-generator](https://github.com/LasseRafn/php-initial-avatar-generator) updated to
 use [Imagine](https://github.com/php-imagine/Imagine), resolving issues with PHP 8.1
 
+This library should be pretty much a drop-in replacement with the following notable changes:
+
+* Font numbers in place of files were removed
+* This library uses strictly defined types
+* This library returns Imagine objects instead for (non-SVG) generated avatars
+* FontAwesome files are no longer shipped with the library
+
 ## Installation
 You just require using composer and you're good to go!
 ````bash
 composer require allenjb/initial-avatar-generator
 ````
-Rad, *and long*, package name.. huh? Sorry. I'm not very good with names.
 
 ## Usage
 As with installation, usage is quite simple. Generating a image is done by running:
@@ -17,11 +23,11 @@ $avatar = new AllenJB\InitialAvatarGenerator\InitialAvatar();
 $image = $avatar->name('Lasse Rafn')->generate();
 ````
 
-Thats it! The method will return a instance of [Image from Intervention](https://github.com/Intervention/image) so you can stream, download or even encode the image:
+Thats it! The method will return a instance of an [ImageInterface from Imagine](https://imagine.readthedocs.io/en/stable/_static/API/Imagine/Image/ImageInterface.html) so you can save or output the image:
 ````php
-return $image->stream('png', 100);
+return $image->show('png');
 ````
-You can also just pass along the initials, and it will use those. Should you just include a first name, it will use the first two letters of it.
+If only one word is passed, the first 2 letters will be used. If more than 2 words are passed, the initials of the first and last words will be used.
 
 ## SVG generation
 ````php
@@ -31,7 +37,6 @@ echo $avatar->name('Lasse Rafn')->generateSvg()->toXMLString(); // returns SVG X
 ````
 
 ## Supported methods and parameters
-Of cause, passing a name is not the only thing this sweet thing does!
 
 ### Name (initials) - default: JD
 ````php
@@ -83,8 +88,7 @@ Two fonts with two variants are included:
 * /fonts/NotoSans-Bold.ttf
 * /fonts/NotoSans-Regular.ttf
 
-The method will look for the font, if none found it will append `__DIR__` and try again, and if not it will default to the first GD Internal Font.
-If you input an integer between 1 and 5, it will use a GD Internal font as per that number.
+The method will look for the font, if none found it will append `__DIR__` and try again, and if not it will use the default NotoSans font.
 
 ````php
 // will be Semibold
@@ -121,8 +125,7 @@ Makes rounding smoother with a resizing hack. Could be slower.
 $image = $avatar->rounded()->smooth()->generate();
 ````
 
-If you are going to use `rounded()`, you want to use `smooth()` to avoid pixelated edges. Disabled by default because it _COULD_ be slower.
-I would recommend just rounding with CSS.
+Alternatively consider using CSS instead.
 
 ### Font Size - default: 0.5
 ````php
@@ -131,7 +134,6 @@ $image = $avatar->fontSize(0.25)->generate(); // Font will be 25% of image size.
 If the Image size is 50px and fontSize is 0.5, the font size will be 25px.
 
 ## Chaining it all together
-We will not use the ->font() method in this example; as I like the regular one.
 
 ````php
 return $avatar->name('Lasse Rafn')
@@ -141,7 +143,7 @@ return $avatar->name('Lasse Rafn')
               ->background('#8BC34A')
               ->color('#fff')
               ->generate()
-              ->stream('png', 100);
+              ->save('png');
 ````
 
 Now, using that in a image (sized 48x48 pixels for retina):
@@ -154,30 +156,26 @@ Will yield:
 
 *Rounded for appearance; the actual avatar is a filled square*
 
-## Font Awesome Support
+## Icon Font Support
 
-The package supports FontAwesome (v5) and already distributes the free version as `otf` format (see `/fonts` folder).
-
-However, when using FontAwesome you may want to display one specific icon instead of the user's initials. This package, therefore, provides a handy `glyph($code)` method to be used along with FontAwesome.
-
-First, you need to "find" the respective unicode for the glyph you want to insert. For example, you may want to display a typical "user" icon (unicode: `f007`). The unicode is located near the name of the icon (e.g., see here the user icon as an example here: [https://fontawesome.com/icons/user](https://fontawesome.com/icons/user) ).
+First, you need to "find" the respective unicode for the glyph you want to insert. For example, using FontAwesome, to display a typical "user" icon use unicode: `f007`. You can usually find the unicode character (code) on the icon font browser.
 
 An example for rendering a red avatar with a white "user" glyph would look like this:
 
 ```php
-// note that we
-// 1) use glyph() instead of name
-// 2) change the font to FontAwesome!
+// note that this code
+// 1) uses glyph() instead of name
+// 2) changes the font to FontAwesome!
 return $avatar->glyph('f007')
               ->font('/fonts/FontAwesome5Free-Regular-400.otf')
               ->color('#fff')
               ->background('#ff0000')
               ->generate()
-              ->stream('png', 100);
+              ->save('png');
 ```
 
 ## Script/Language support
-Some letters are not supported by the default font files, so I added some fonts to add support. You must use `autoFont()` to enable this feature. Supported are:
+Additional font files have been included to aid in supporting the following scripts. These can be used via the ->autoFont() option.
 
 * Arabic
 * Armenian
