@@ -12,6 +12,7 @@ interface Base
      */
     public function translate($words);
 
+
     /**
      * Get the source language of translator
      *

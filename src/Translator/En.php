@@ -12,6 +12,7 @@ class En implements Base
         return $words;
     }
 
+
     /**
      * @inheritdoc
      */

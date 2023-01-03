@@ -11,6 +11,7 @@ class ZhCN implements Base
      */
     protected Pinyin $inherent;
 
+
     /**
      * ZhCN constructor, set the instance of PinYin
      */
@@ -19,6 +20,7 @@ class ZhCN implements Base
         $this->inherent = new Pinyin();
     }
 
+
     /**
      * @inheritdoc
      */
@@ -26,6 +28,7 @@ class ZhCN implements Base
     {
         return implode(' ', $this->inherent->name($words));
     }
+
 
     /**
      * @inheritdoc
