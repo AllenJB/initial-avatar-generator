@@ -27,4 +27,16 @@ class ImageSizeTest extends TestCase
         $this->assertEquals(100, $avatar->generate()->getSize()->getWidth());
         $this->assertEquals(100, $avatar->generate()->getSize()->getHeight());
     }
+
+
+    /** @test */
+    public function can_handle_odd_sizes()
+    {
+        error_reporting(E_ALL);
+        $avatar = new InitialAvatar();
+        $image = $avatar->gd()->rounded()->width(21)->height(21)->generate("AB");
+
+        $this->assertEquals(21, $image->getSize()->getWidth());
+        $this->assertEquals(21, $image->getSize()->getHeight());
+    }
 }

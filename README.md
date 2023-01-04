@@ -2,11 +2,13 @@
 Fork of [lasserafn/php-initial-avatar-generator](https://github.com/LasseRafn/php-initial-avatar-generator) updated to
 use [Imagine](https://github.com/php-imagine/Imagine), resolving issues with PHP 8.1
 
-This library should be pretty much a drop-in replacement with the following notable changes:
+This library should be pretty much a drop-in replacement for most users with the following notable changes:
 
-* Font numbers in place of files were removed
 * This library uses strictly defined types
 * This library returns Imagine objects instead for (non-SVG) generated avatars
+* Font numbers in place of files were removed
+* AutoFont functionality has been removed - you can reimplement this yourself using the lasserafn/php-string-script-language package
+* Only the default Open Sans Regular font is shipped with the package
 * FontAwesome files are no longer shipped with the library
 
 ## Installation
@@ -43,14 +45,6 @@ echo $avatar->name('Lasse Rafn')->generateSvg()->toXMLString(); // returns SVG X
 $image = $avatar->name('Albert Magnum')->generate();
 ````
 
-### AutoFont - default: false
-
-Will detect language script (using [lasserafn/php-string-script-language](https://github.com/lasserafn/php-string-script-language)) and use a font that supports it.
-
-````php
-$image = $avatar->autoFont()->generate();
-````
-
 ### Width - default: 48
 ````php
 // will be 96 pixels wide.
@@ -82,17 +76,9 @@ $image = $avatar->color('#ff0000')->generate();
 ````
 
 ### Font file - default: /fonts/OpenSans-Regular.ttf
-Two fonts with two variants are included:
-* /fonts/OpenSans-Regular.ttf
-* /fonts/OpenSans-Semibold.ttf
-* /fonts/NotoSans-Bold.ttf
-* /fonts/NotoSans-Regular.ttf
-
-The method will look for the font, if none found it will append `__DIR__` and try again, and if not it will use the default NotoSans font.
-
 ````php
 // will be Semibold
-$image = $avatar->font('/fonts/OpenSans-Semibold.ttf')->generate();
+$image = $avatar->font('/path/to/fonts/OpenSans-Semibold.ttf')->generate();
 ````
 
 ### Font name (for SVGs) - default: Open Sans, sans-serif
@@ -167,22 +153,9 @@ An example for rendering a red avatar with a white "user" glyph would look like 
 // 1) uses glyph() instead of name
 // 2) changes the font to FontAwesome!
 return $avatar->glyph('f007')
-              ->font('/fonts/FontAwesome5Free-Regular-400.otf')
+              ->font('/path/to/fonts/FontAwesome5Free-Regular-400.otf')
               ->color('#fff')
               ->background('#ff0000')
               ->generate()
               ->save('png');
 ```
-
-## Script/Language support
-Additional font files have been included to aid in supporting the following scripts. These can be used via the ->autoFont() option.
-
-* Arabic
-* Armenian
-* Bengali
-* Georgian
-* Hebrew
-* Mongolian
-* Chinese
-* Thai
-* Tibetan

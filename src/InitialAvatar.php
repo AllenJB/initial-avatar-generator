@@ -18,7 +18,6 @@ use AllenJB\InitialAvatarGenerator\Translator\Base;
 use AllenJB\InitialAvatarGenerator\Translator\En;
 use AllenJB\InitialAvatarGenerator\Translator\ZhCN;
 use LasseRafn\Initials\Initials;
-use LasseRafn\StringScript;
 use SVG\Nodes\Shapes\SVGCircle;
 use SVG\Nodes\Shapes\SVGRect;
 use SVG\Nodes\Texts\SVGText;
@@ -49,13 +48,11 @@ class InitialAvatar
 
     protected bool $smooth = false;
 
-    protected bool $autofont = false;
-
     protected bool $keepCase = false;
 
     protected bool $allowSpecialCharacters = true;
 
-    protected string $fontFile = '/fonts/OpenSans-Regular.ttf';
+    protected string $fontFile = __DIR__ . '/fonts/OpenSans-Regular.ttf';
 
     protected string $fontName = 'OpenSans, sans-serif';
 
@@ -287,18 +284,6 @@ class InitialAvatar
 
 
     /**
-     * Set if should detect character script
-     * and use a font that supports it.
-     */
-    public function autoFont(bool $autofont = true): self
-    {
-        $this->autofont = $autofont;
-
-        return $this;
-    }
-
-
-    /**
      * Set if should make a rounding smoother with a resizing hack.
      */
     public function smooth(bool $smooth = true): self
@@ -498,15 +483,6 @@ class InitialAvatar
 
 
     /**
-     * Will return the autofont parameter.
-     */
-    public function getAutoFont(): bool
-    {
-        return $this->autofont;
-    }
-
-
-    /**
      * Set language of name, pls use `language` before `name`, just like
      * ```php
      * $avatar->language('en')->name('Mr Green'); // Right
@@ -611,7 +587,7 @@ class InitialAvatar
         $avatarText = $this->getInitials();
 
         $font = $this->getImagineFont(
-            $this->findFontFile(),
+            $this->getFontFile(),
             (int) ($this->fontSize * $width),
             $palette->color($this->fontColor)
         );
@@ -648,7 +624,7 @@ class InitialAvatar
         $background->setStyle('fill', $this->getBackgroundColor());
         $document->addChild($background);
 
-        SVG::addFont($this->findFontFile());
+        SVG::addFont($this->getFontFile());
         // Text
         $text = new SVGText($this->getInitials(), '50%', '50%');
         $text->setFontFamily($this->getFontName());
@@ -668,94 +644,4 @@ class InitialAvatar
         return $image;
     }
 
-
-    protected function findFontFile(): string
-    {
-        $fontFile = $this->getFontFile();
-
-        if ($this->getAutoFont()) {
-            $fontFile = $this->getFontByScript();
-        }
-
-        $weightsToTry = ['Regular'];
-
-        if ($this->preferBold) {
-            $weightsToTry = ['Bold', 'Semibold', 'Regular'];
-        }
-
-        $originalFile = $fontFile;
-
-        foreach ($weightsToTry as $weight) {
-            $fontFile = preg_replace('/(\-(Bold|Semibold|Regular))/', "-{$weight}", $originalFile);
-            if ($fontFile === null) {
-                throw new UnexpectedValueException("Failed to replace font weight");
-            }
-
-            if (file_exists($fontFile)) {
-                return $fontFile;
-            }
-
-            if (file_exists(__DIR__ . $fontFile)) {
-                return __DIR__ . $fontFile;
-            }
-
-            if (file_exists(__DIR__ . '/' . $fontFile)) {
-                return __DIR__ . '/' . $fontFile;
-            }
-        }
-
-        trigger_error("Font file not found: " . $fontFile, E_USER_WARNING);
-        return __DIR__ . '/fonts/NotoSans-Regular.ttf';
-    }
-
-
-    protected function getFontByScript(): string
-    {
-        // Arabic
-        if (StringScript::isArabic($this->getInitials())) {
-            return __DIR__ . '/fonts/script/Noto-Arabic-Regular.ttf';
-        }
-
-        // Armenian
-        if (StringScript::isArmenian($this->getInitials())) {
-            return __DIR__ . '/fonts/script/Noto-Armenian-Regular.ttf';
-        }
-
-        // Bengali
-        if (StringScript::isBengali($this->getInitials())) {
-            return __DIR__ . '/fonts/script/Noto-Bengali-Regular.ttf';
-        }
-
-        // Georgian
-        if (StringScript::isGeorgian($this->getInitials())) {
-            return __DIR__ . '/fonts/script/Noto-Georgian-Regular.ttf';
-        }
-
-        // Hebrew
-        if (StringScript::isHebrew($this->getInitials())) {
-            return __DIR__ . '/fonts/script/Noto-Hebrew-Regular.ttf';
-        }
-
-        // Mongolian
-        if (StringScript::isMongolian($this->getInitials())) {
-            return __DIR__ . '/fonts/script/Noto-Mongolian-Regular.ttf';
-        }
-
-        // Thai
-        if (StringScript::isThai($this->getInitials())) {
-            return __DIR__ . '/fonts/script/Noto-Thai-Regular.ttf';
-        }
-
-        // Tibetan
-        if (StringScript::isTibetan($this->getInitials())) {
-            return __DIR__ . '/fonts/script/Noto-Tibetan-Regular.ttf';
-        }
-
-        // Chinese & Japanese
-        if (StringScript::isJapanese($this->getInitials()) || StringScript::isChinese($this->getInitials())) {
-            return __DIR__ . '/fonts/script/Noto-CJKJP-Regular.otf';
-        }
-
-        return $this->getFontFile();
-    }
 }

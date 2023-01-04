@@ -101,7 +101,7 @@ class GenerateTest extends TestCase
     {
         $avatar = new InitialAvatar();
 
-        $image = $avatar->font(__DIR__ . '/../src/fonts/NotoSans-Regular.ttf')->generate();
+        $image = $avatar->font(__DIR__ . '/fonts/NotoSans-Regular.otf')->generate();
 
         $this->assertInstanceOf(ImageInterface::class, $image);
     }
@@ -113,7 +113,7 @@ class GenerateTest extends TestCase
         $avatar = new InitialAvatar();
 
         $this->expectWarning();
-        $this->expectWarningMessageMatches('/Font file not found/');
+        $this->expectWarningMessageMatches('/Could not find\/open font/');
         $image = $avatar->font('no-font')->generate();
 
         $this->assertInstanceOf(ImageInterface::class, $image);
@@ -125,7 +125,7 @@ class GenerateTest extends TestCase
     {
         $avatar = new InitialAvatar();
 
-        $image = $avatar->font('fonts/NotoSans-Regular.ttf')->generate();
+        $image = $avatar->font(__DIR__ .'/fonts/NotoSans-Regular.otf')->generate();
 
         $this->assertInstanceOf(ImageInterface::class, $image);
     }
@@ -136,18 +136,8 @@ class GenerateTest extends TestCase
     {
         $avatar = new InitialAvatar();
 
-        $image = $avatar->font('fonts/NotoSans-Regular.ttf')->generateSvg();
+        $image = $avatar->generateSvg("AB");
 
         $this->assertInstanceOf(SVG::class, $image);
-    }
-
-
-    /** @test */
-    public function handle_odd_sizes()
-    {
-        error_reporting(E_ALL);
-        $avatar = new InitialAvatar();
-        $image = $avatar->gd()->rounded()->width(21)->height(21)->generate("AB");
-        $this->assertInstanceOf(ImageInterface::class, $image);
     }
 }

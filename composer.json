@@ -20,7 +20,6 @@
 		"ext-json": "*",
 		"imagine/imagine": "^1.3",
 		"lasserafn/php-initials": "^3.0",
-		"lasserafn/php-string-script-language": "^0.3.0",
 		"meyfa/php-svg": "^0.14",
 		"overtrue/pinyin": "^5.0"
 	},
